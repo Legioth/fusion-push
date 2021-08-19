@@ -1,6 +1,7 @@
 import { showNotification } from '@vaadin/flow-frontend/a-notification';
 import '@vaadin/vaadin-button';
 import '@vaadin/vaadin-text-field';
+import { startCountdown } from 'Frontend/fake-generated/MyPushEndpoint';
 import { customElement, html } from 'lit-element';
 import { View } from '../../views/view';
 
@@ -19,7 +20,11 @@ export class HelloWorldView extends View {
     this.name = e.detail.value;
   }
 
-  sayHello() {
-    showNotification(`Hello ${this.name}`);
+  async sayHello() {
+    const countdown = startCountdown(this.name, 5);
+
+    for await (const callout of countdown) {
+      showNotification(callout);
+    }
   }
 }
